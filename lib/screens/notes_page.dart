@@ -1,5 +1,3 @@
-//import 'package:keep/main.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +16,8 @@ final _lightColors = [
 ];
 
 class NotePage extends StatefulWidget {
+  const NotePage({super.key});
+
   @override
   State<NotePage> createState() => _NotePageState();
 }
@@ -42,7 +42,7 @@ class _NotePageState extends State<NotePage> {
     setState(() {
       isLoading = true;
     });
-    this.notes = await NotesDatabase.instance.readAllNotes();
+    notes = await NotesDatabase.instance.readAllNotes();
 
     setState(() {
       isLoading = false;
@@ -63,32 +63,32 @@ class _NotePageState extends State<NotePage> {
                   : getListView(),
         ),
         floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
           backgroundColor: Colors.tealAccent[100],
           onPressed: () async {
-            await Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => AddOrEdit()));
+            await Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const AddOrEdit()));
             refreshNotes();
           },
+          child: const Icon(Icons.add),
         ));
   }
 
   Widget getListView() {
     return MasonryGridView.builder(
       itemCount: notes.length,
-      gridDelegate:
-          SliverSimpleGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2),
       itemBuilder: (BuildContext context, int index) {
         final note = notes[index];
         return GestureDetector(
           onTap: () async {
             await Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => NoteDetail(noteId: note.id!)),
+              MaterialPageRoute(
+                  builder: (context) => NoteDetail(noteId: note.id!)),
             );
             refreshNotes();
           },
           child: Container(
-            //alignment: Alignment.topLeft,
             height: getMinHeight(index),
             padding: const EdgeInsets.all(5.0),
             margin: const EdgeInsets.all(5),
@@ -100,7 +100,7 @@ class _NotePageState extends State<NotePage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 Row(
                   children: [
                     // Title on the left side
@@ -109,11 +109,10 @@ class _NotePageState extends State<NotePage> {
                         note.title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18,
                           color: Colors.black,
                           fontWeight: FontWeight.w600,
-                          //fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -122,33 +121,28 @@ class _NotePageState extends State<NotePage> {
                             Icons.star,
                             color: Colors.teal[800],
                           )
-                        : SizedBox(
-                            width: 2,
-                          ),
+                        : const SizedBox(width: 2),
                   ],
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
-                  "Last Modified ${DateFormat.yMMMd().add_jm().format(note.modifiedTime)}",
-                  //textAlign: TextAlign.left,
+                  "Last Modified: \n${DateFormat.yMMMd().add_jm().format(note.modifiedTime)}",
                   style: TextStyle(
                     fontSize: 11,
                     color: Colors.grey[850],
                     fontWeight: FontWeight.w300,
                   ),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 Text(
                   note.description,
                   overflow: TextOverflow.ellipsis,
                   maxLines: getLineNum(index),
                   textAlign: TextAlign.justify,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.black,
                     fontWeight: FontWeight.w300,
-
-                    //fontWeight: FontWeight.bold,
                   ),
                 ),
               ],

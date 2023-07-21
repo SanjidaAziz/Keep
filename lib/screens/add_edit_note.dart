@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:keep/db/notes_database.dart';
 import 'package:keep/models/note.dart';
@@ -6,10 +5,9 @@ import 'package:keep/screens/note_detail.dart';
 
 class AddOrEdit extends StatefulWidget {
   final Note? note;
-  const AddOrEdit({
-    Key? key,
-    this.note
-  }): super(key: key);
+
+  const AddOrEdit({Key? key, this.note}) : super(key: key);
+
   @override
   State<AddOrEdit> createState() => _AddOrEditState();
 }
@@ -24,7 +22,7 @@ class _AddOrEditState extends State<AddOrEdit> {
   @override
   void initState() {
     super.initState();
-    isImportantNow = widget.note?.isImportant?? false;
+    isImportantNow = widget.note?.isImportant ?? false;
     titleNow = widget.note?.title ?? 'Untitled';
     descriptionNow = widget.note?.description ?? '';
     modifiedTimeNow = widget.note?.modifiedTime ?? DateTime.now();
@@ -35,51 +33,50 @@ class _AddOrEditState extends State<AddOrEdit> {
     return Scaffold(
       appBar: AppBar(
         title: widget.note == null
-            ? Text("Add Note")
-            : Text("Edit note"),
+            ? const Text("Add Note")
+            : const Text("Edit note"),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new),
-          onPressed: (){
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
             Navigator.of(context).pop();
           },
-
         ),
-        actions: [StarButton(),SaveButton()],
+        actions: [StarButton(), SaveButton()],
       ),
       body: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Form(
           key: formKey,
           child: Column(
             children: [
               TextFormField(
-                onChanged: (value){
-                  titleNow=value;
+                onChanged: (value) {
+                  titleNow = value;
                 },
                 maxLines: 1,
                 initialValue: titleNow,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 22,
+                  fontSize: 24,
                 ),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Title',
                   hintStyle: TextStyle(color: Colors.white70),
                 ),
-                validator: (title) =>
-                title != null && title.isEmpty ? 'The title cannot be empty' : null,
-                //onChanged: ,
+                validator: (title) => title != null && title.isEmpty
+                    ? 'The title cannot be empty'
+                    : null,
               ),
               TextFormField(
-                onChanged: (value){
-                  descriptionNow=value;
+                onChanged: (value) {
+                  descriptionNow = value;
                 },
                 maxLines: 13,
                 initialValue: descriptionNow,
-                style: TextStyle(color: Colors.white, fontSize: 16),
-                decoration: InputDecoration(
+                style: const TextStyle(color: Colors.white, fontSize: 16),
+                decoration: const InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Type something...',
                   hintStyle: TextStyle(color: Colors.white60),
@@ -87,7 +84,6 @@ class _AddOrEditState extends State<AddOrEdit> {
                 validator: (title) => title != null && title.isEmpty
                     ? 'The description cannot be empty'
                     : null,
-               // onChanged: onChangedDescription,
               )
             ],
           ),
@@ -96,44 +92,43 @@ class _AddOrEditState extends State<AddOrEdit> {
     );
   }
 
-
   Widget SaveButton() {
     return IconButton(
-        onPressed: () async{
+        onPressed: () async {
           await addOrEditNote();
           Navigator.of(context).pop();
         },
-        icon: Icon(Icons.save));
+        icon: const Icon(Icons.save));
   }
+
   Widget StarButton() {
     return IconButton(
       icon: isImportantNow
-          ? Icon(Icons.star, color: Colors.white)
-          : Icon(Icons.star_border),
+          ? const Icon(Icons.star, color: Colors.white)
+          : const Icon(Icons.star_border),
       onPressed: () {
         setState(() {
-          // Toggle isImportant property
           isImportantNow = !isImportantNow;
         });
       },
     );
   }
-  Future addOrEditNote()async{
-    final isValid=formKey.currentState!.validate();
+
+  Future addOrEditNote() async {
+    final isValid = formKey.currentState!.validate();
     bool isUpdating;
-    if(isValid){
-      if(widget.note == null){
-        isUpdating=false;
+    if (isValid) {
+      if (widget.note == null) {
+        isUpdating = false;
         await AddNote();
-      }
-      else {
-        isUpdating=true;
+      } else {
+        isUpdating = true;
         await UpdateNote();
       }
     }
   }
 
-  Future AddNote() async{
+  Future AddNote() async {
     final note = Note(
       title: titleNow,
       description: descriptionNow,
@@ -142,7 +137,8 @@ class _AddOrEditState extends State<AddOrEdit> {
     );
     await NotesDatabase.instance.create(note);
   }
-  Future UpdateNote() async{
+
+  Future UpdateNote() async {
     final note = widget.note!.copy(
       title: titleNow,
       description: descriptionNow,

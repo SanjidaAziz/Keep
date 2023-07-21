@@ -31,7 +31,7 @@ class _NoteDetailState extends State<NoteDetail> {
     setState(() {
       isLoading = true;
     });
-    this.note = await NotesDatabase.instance.readNote(widget.noteId);
+    note = await NotesDatabase.instance.readNote(widget.noteId);
 
     setState(() {
       isLoading = false;
@@ -59,6 +59,7 @@ class _NoteDetailState extends State<NoteDetail> {
                 padding: const EdgeInsets.all(12),
                 child: Column(
                   children: [
+                    const SizedBox(height: 10),
                     Row(
                       children: [
                         // Title on the left side
@@ -73,43 +74,33 @@ class _NoteDetailState extends State<NoteDetail> {
                           ),
                         ),
                         note.isImportant
-                            ? Padding(
-                                padding: EdgeInsets.only(top: 3),
-                                child: Icon(
+                            ?  Icon(
                                   Icons.star,
                                   size: 30.0,
                                   color: Colors.teal[50],
-                                ),
-                              )
-                            : SizedBox(
-                                width: 2,
-                              ),
+                                )
+                            : const SizedBox(width: 2),
                       ],
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
+                    const SizedBox(height: 10),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "Last Modified ${DateFormat.yMMMd().format(note.modifiedTime)}",
                         style: const TextStyle(
-                          fontSize: 15,
+                          fontSize: 14,
                           fontWeight: FontWeight.w200,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 10),
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text(
                         note.description,
                         textAlign: TextAlign.justify,
-                        //maxLines: 500,
                         style: const TextStyle(
                           fontSize: 16,
-
-                          //fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
