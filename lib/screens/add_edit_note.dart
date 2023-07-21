@@ -107,13 +107,15 @@ class _AddOrEditState extends State<AddOrEdit> {
   }
   Widget StarButton() {
     return IconButton(
-        onPressed: ()async{
-           // isImportantNow
-            //    ? isImportantNow=false
-              //  : isImportantNow=true;
-        },
-       // icon:Icon(Icons.star),
-        icon: isImportantNow? Icon(Icons.star): Icon(Icons.star_border),
+      icon: isImportantNow
+          ? Icon(Icons.star, color: Colors.white)
+          : Icon(Icons.star_border),
+      onPressed: () {
+        setState(() {
+          // Toggle isImportant property
+          isImportantNow = !isImportantNow;
+        });
+      },
     );
   }
   Future addOrEditNote()async{

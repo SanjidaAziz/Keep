@@ -64,6 +64,7 @@ class _NotePageState extends State<NotePage> {
         ),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
+          backgroundColor: Colors.tealAccent[100],
           onPressed: () async {
             await Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => AddOrEdit()));
@@ -119,7 +120,7 @@ class _NotePageState extends State<NotePage> {
                     note.isImportant
                         ? Icon(
                             Icons.star,
-                            color: Colors.black54,
+                            color: Colors.teal[800],
                           )
                         : SizedBox(
                             width: 2,

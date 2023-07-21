@@ -55,22 +55,40 @@ class _NoteDetailState extends State<NoteDetail> {
               child: CircularProgressIndicator(),
             )
           : SingleChildScrollView(
-            child: Container(
+              child: Container(
                 padding: const EdgeInsets.all(12),
                 child: Column(
                   children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        note.title,
-                        textAlign: TextAlign.left,
-                        style: const TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
+                    Row(
+                      children: [
+                        // Title on the left side
+                        Expanded(
+                          child: Text(
+                            note.title,
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
+                        note.isImportant
+                            ? Padding(
+                                padding: EdgeInsets.only(top: 3),
+                                child: Icon(
+                                  Icons.star,
+                                  size: 30.0,
+                                  color: Colors.teal[50],
+                                ),
+                              )
+                            : SizedBox(
+                                width: 2,
+                              ),
+                      ],
                     ),
-                    const SizedBox(height: 8,),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -82,20 +100,23 @@ class _NoteDetailState extends State<NoteDetail> {
                       ),
                     ),
                     const SizedBox(height: 6),
-                    Text(
-                      note.description,
-                      textAlign: TextAlign.justify,
-                      //maxLines: 500,
-                      style: const TextStyle(
-                        fontSize: 16,
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        note.description,
+                        textAlign: TextAlign.justify,
+                        //maxLines: 500,
+                        style: const TextStyle(
+                          fontSize: 16,
 
-                        //fontWeight: FontWeight.bold,
+                          //fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-          ),
+            ),
     );
   }
 
@@ -112,7 +133,7 @@ class _NoteDetailState extends State<NoteDetail> {
 
   Widget DeleteButton() {
     return IconButton(
-        onPressed: () async{
+        onPressed: () async {
           showDialog(
               context: context,
               builder: (context) {
